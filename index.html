@@ -123,24 +123,23 @@
   <div class="container">
     <h1>🎉 Selamat Ulang Tahun, Rismawati! 🎉</h1>
     <p id="message">Semoga harimu menyenangkan! 😊</p>
-    <button id="music-btn">▶ Putar Musik India 🎶</button>
     <button id="joke-btn">Lelucon Cinta ❤️</button>
   </div>
 
   <div id="joke-note"></div>
   <canvas id="fireworks"></canvas>
 
-  <audio id="bg-music" autoplay loop>
-  <source src="musik/india.m4a" type="audio/mp4">
-  <source src="musik/india.mp3" type="audio/mpeg">
-  Browser Anda tidak mendukung audio.
-</audio>
-
+  <audio id="bg-music" autoplay loop muted>
+    <source src="musik/india.m4a" type="audio/mp4">
+    <source src="musik/india.mp3" type="audio/mpeg">
+    Browser Anda tidak mendukung audio.
+  </audio>
 
   <script>
-    const audio = document.getElementById('bg-music');
-    document.getElementById('music-btn').addEventListener('click', () => {
-      audio.play();
+    document.addEventListener('DOMContentLoaded', () => {
+      const audio = document.getElementById('bg-music');
+      audio.muted = false;
+      audio.play().catch(err => console.warn('Autoplay diblokir:', err));
     });
 
     const canvas = document.getElementById('fireworks');
@@ -256,10 +255,24 @@
       { q: "Kenapa kamu kayak teh manis?", a: "Soalnya bikin candu tiap hari pengen terus." },
       { q: "Kenapa aku sering senyum sendiri?", a: "Karena mikirin kamu." },
       { q: "Apa bedanya kamu sama bintang?", a: "Bintang cuma bersinar di langit, kamu bersinar di hatiku." },
-      { q: "Kenapa aku betah di rumah?", a: "Karena di rumah ada kamu di pikiran." }
+      { q: "Kenapa aku betah di rumah?", a: "Karena di rumah ada kamu di pikiran." },
+      { q: "Apa persamaan kamu dan senja?", a: "Sama-sama bikin hati tenang." },
+      { q: "Kenapa aku suka malam?", a: "Karena malam mengingatkanku pada kenangan denganmu." },
+      { q: "Kenapa chat kamu nggak pernah bikin bosen?", a: "Karena setiap kata dari kamu tuh bikin deg-degan." },
+      { q: "Apa bedanya kamu sama es krim?", a: "Es krim mencair di lidah, kamu mencairkan hatiku." },
+      { q: "Kalau kamu jadi lagu, kamu jadi apa?", a: "Lagu yang tak pernah bosan kuputar." },
+      { q: "Kenapa aku nggak pernah takut gelap?", a: "Karena kamu selalu jadi cahaya di hati." },
+      { q: "Apa bedanya kamu dan matahari?", a: "Matahari menerangi dunia, kamu menerangi hariku." },
+      { q: "Kalau kamu jadi kopi?", a: "Kamu yang bikin aku semangat tiap pagi." },
+      { q: "Apa kamu tahu kenapa aku rajin berdoa?", a: "Supaya kamu jadi jodohku." },
+      { q: "Kenapa aku nggak suka hujan deras?", a: "Karena kamu belum bisa kuajak berteduh bareng." }
     ];
 
+    let jokeTimeout1, jokeTimeout2;
     document.getElementById('joke-btn').addEventListener('click', () => {
+      clearTimeout(jokeTimeout1);
+      clearTimeout(jokeTimeout2);
+
       const joke = jokes[Math.floor(Math.random() * jokes.length)];
       const jokeNote = document.getElementById('joke-note');
 
@@ -271,11 +284,11 @@
       jokeNote.textContent = joke.q;
       jokeNote.style.display = 'block';
 
-      setTimeout(() => {
+      jokeTimeout1 = setTimeout(() => {
         jokeNote.textContent = joke.q + "\n\n👉 " + joke.a;
       }, 4000);
 
-      setTimeout(() => {
+      jokeTimeout2 = setTimeout(() => {
         jokeNote.style.display = 'none';
       }, 8000);
     });
