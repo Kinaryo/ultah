@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Selamat Ulang Tahun Rismawati!</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: url('images/confetti-bg.jpg') center center / cover no-repeat;
+      font-family: 'Poppins', sans-serif;
+      overflow: hidden;
+    }
+    .container {
+      position: relative;
+      z-index: 10;
+      background: rgba(255,255,255,0.9);
+      padding: 25px 30px;
+      border-radius: 20px;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+      text-align: center;
+      max-width: 90%; width: 400px;
+      margin: 50px auto;
+    }
+    h1 { font-size: 22px; color: #e91e63; margin-bottom: 20px; }
+    #message {
+      min-height: 60px;
+      font-size: 16px;
+      color: #555;
+      margin-bottom: 20px;
+      transition: all 0.5s ease;
+    }
+    #joke-note {
+      position: absolute;
+      padding: 10px 15px;
+      background: #ffeb3b;
+      color: #333;
+      border-radius: 10px;
+      font-size: 14px;
+      box-shadow: 2px 2px 8px rgba(0,0,0,0.3);
+      display: none;
+      z-index: 20;
+      max-width: 200px;
+      animation: fadeInOut 5s linear forwards;
+    }
+    @keyframes fadeInOut {
+      0% {opacity: 0;}
+      10% {opacity: 1;}
+      90% {opacity: 1;}
+      100% {opacity: 0;}
+    }
+    .balloon, .petal, .love {
+      position: absolute;
+      bottom: -100px;
+      opacity: 0.8;
+    }
+    .balloon {
+      width: 30px; height: 45px; border-radius: 50%;
+      animation: floatUp 8s linear;
+    }
+    .petal {
+      width: 20px; height: 20px; border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, #ff99cc, #ff66aa);
+      animation: fallDown 10s linear;
+    }
+    .love {
+      width: 30px; height: 30px;
+      font-size: 30px;
+      line-height: 30px;
+      text-align: center;
+      color: #e91e63;
+      animation: floatUp 6s linear;
+    }
+    @keyframes floatUp { 0% { transform: translateY(0); } 100% { transform: translateY(-110vh) rotate(360deg); } }
+    @keyframes fallDown { 0% { transform: translateY(0) rotate(0deg); } 100% { transform: translateY(120vh) rotate(360deg); } }
+    canvas#fireworks {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      pointer-events: none;
+      z-index: 5;
+    }
+    button {
+      margin: 10px 5px;
+      padding: 8px 16px;
+      background: #e91e63;
+      color: white;
+      border: none;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+    button:hover { transform: scale(1.05); }
+    @media (max-width: 500px) {
+      h1 { font-size: 18px; }
+      #message { font-size: 14px; }
+      button { padding: 6px 12px; font-size: 14px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🎉 Selamat Ulang Tahun, Rismawati! 🎉</h1>
+    <p id="message">Semoga harimu menyenangkan! 😊</p>
+    <button id="joke-btn">Lelucon Random 😂</button>
+  </div>
+  <div id="joke-note"></div>
+  <canvas id="fireworks"></canvas>
+  <audio id="bg-music" autoplay loop>
+    <source src="musik/india.m4a" type="audio/mp3">
+    Browser Anda tidak mendukung audio.
+  </audio>
+  <script>
+    const canvas = document.getElementById('fireworks');
+    const ctx = canvas.getContext('2d');
+    function resize() { canvas.width = innerWidth; canvas.height = innerHeight; }
+    window.addEventListener('resize', resize);
+    resize();
+
+    class Particle {
+      constructor(x,y,dx,dy,color){ Object.assign(this,{x,y,dx,dy,alpha:1,color}); }
+      update(){ this.x+=this.dx; this.y+=this.dy; this.alpha-=0.02; }
+      draw(){ ctx.save(); ctx.globalAlpha=this.alpha; ctx.fillStyle=this.color; ctx.beginPath(); ctx.arc(this.x,this.y,2,0,Math.PI*2); ctx.fill(); ctx.restore(); }
+    }
+    function triggerFireworks(){
+      const particles = [];
+      const x = Math.random()*canvas.width;
+      const y = Math.random()*canvas.height/2;
+      for(let i=0;i<100;i++){ const angle=Math.random()*Math.PI*2, speed=2+Math.random()*2;
+        particles.push(new Particle(x,y,Math.cos(angle)*speed,Math.sin(angle)*speed,`hsl(${Math.random()*360},100%,50%)`)); }
+      (function animate(){ ctx.clearRect(0,0,canvas.width,canvas.height);
+        particles.forEach((p,i)=>{ p.update(); p.draw(); if(p.alpha<=0) particles.splice(i,1); });
+        if(particles.length) requestAnimationFrame(animate);
+      })();
+    }
+
+    function generateBalloons(count){ for(let i=0;i<count;i++){ const b=document.createElement('div'); b.className='balloon'; b.style.left=Math.random()*innerWidth+'px'; b.style.background=`hsl(${Math.random()*360},80%,60%)`; b.style.animationDuration=6+Math.random()*4+'s'; document.body.append(b); setTimeout(()=>b.remove(),10000); }}
+    function generatePetals(count){ for(let i=0;i<count;i++){ const p=document.createElement('div'); p.className='petal'; p.style.left=Math.random()*innerWidth+'px'; p.style.animationDuration=8+Math.random()*5+'s'; document.body.append(p); setTimeout(()=>p.remove(),12000); }}
+    function generateLoves(count){ for(let i=0;i<count;i++){ const l=document.createElement('div'); l.className='love'; l.style.left=Math.random()*innerWidth+'px'; l.textContent='❤️'; l.style.animationDuration=5+Math.random()*3+'s'; document.body.append(l); setTimeout(()=>l.remove(),8000); }}
+
+    setInterval(()=>{ generateBalloons(5); generatePetals(5); generateLoves(3); }, 2000);
+    setInterval(triggerFireworks, 3000);
+
+    const messages = [
+      "Semoga hari-harimu dipenuhi bahagia dan tawa! 🎂",
+      "Panjang umur, sehat selalu, rezeki berlimpah! 💖",
+      "Semoga mimpi indahmu menjadi nyata tahun ini! ✨",
+      "Terus menjadi inspirasi bagi banyak orang! 🌟",
+      "Kamu sangat berarti, jangan pernah ragu! 🌈",
+      "Selalu tersenyum karena dunia butuh sinarmu! 😊"
+    ];
+    let msgIdx = 0;
+    const msgEl = document.getElementById('message');
+    setInterval(() => {
+      msgEl.textContent = messages[msgIdx];
+      msgIdx = (msgIdx + 1) % messages.length;
+    }, 3000);
+
+    const jokes = [
+      "Kenapa komputer selalu kedinginan? Karena dia membuka banyak jendela!",
+      "Apa yang dilakukan kentang di sekolah? Belajar nge-‘kentang’-kan!",
+      "Kenapa pisang suka sendiri? Karena dia suka berbuah hati. 😂",
+      "Apa bedanya burung dan laptop? Burung bisa tweet tanpa internet!",
+      "Kenapa matahari nggak pernah kuliah? Karena dia selalu menerangi kelas!"
+    ];
+    document.getElementById('joke-btn').addEventListener('click', () => {
+      const joke = jokes[Math.floor(Math.random() * jokes.length)];
+      const jokeNote = document.getElementById('joke-note');
+      jokeNote.textContent = joke;
+      // Munculkan di posisi acak
+      const x = Math.random() * (window.innerWidth - 220);
+      const y = Math.random() * (window.innerHeight - 100);
+      jokeNote.style.left = x + 'px';
+      jokeNote.style.top = y + 'px';
+      jokeNote.style.display = 'block';
+      // Hilang setelah 5 detik
+      setTimeout(() => { jokeNote.style.display = 'none'; }, 5000);
+    });
+
+  </script>
+</body>
+</html>
