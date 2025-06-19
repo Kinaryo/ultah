@@ -1,264 +1,458 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Selamat Ulang Tahun, Rismawati!</title>
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-      background: url('https://cdn.pixabay.com/photo/2017/10/10/21/46/confetti-2838890_960_720.jpg') center center / cover no-repeat;
-      font-family: 'Poppins', sans-serif;
-      overflow: hidden;
-    }
-    .container {
-      position: relative;
-      z-index: 10;
-      background: rgba(255, 255, 255, 0.9);
-      padding: 25px 30px;
-      border-radius: 20px;
-      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
-      text-align: center;
-      max-width: 90%;
-      width: 400px;
-      margin: 50px auto;
-    }
-    h1 {
-      font-size: 22px;
-      color: #e91e63;
-      margin-bottom: 20px;
-    }
-    #message {
-      min-height: 60px;
-      font-size: 16px;
-      color: #555;
-      margin-bottom: 20px;
-      transition: all 0.5s ease;
-    }
-    #joke-note {
-      position: absolute;
-      padding: 10px 15px;
-      background: #fff9c4;
-      color: #333;
-      border-radius: 10px;
-      font-size: 14px;
-      box-shadow: 2px 2px 8px rgba(0,0,0,0.3);
-      display: none;
-      z-index: 20;
-      max-width: 250px;
-      white-space: pre-wrap;
-    }
-    .balloon, .petal, .love {
-      position: absolute;
-      bottom: -100px;
-      opacity: 0.8;
-    }
-    .balloon { width: 30px; height: 45px; border-radius: 50%; animation: floatUp 8s linear; }
-    .petal {
-      width: 20px; height: 20px; border-radius: 50%;
-      background: radial-gradient(circle at 30% 30%, #ff99cc, #ff66aa);
-      animation: fallDown 10s linear;
-    }
-    .love {
-      width: 30px; height: 30px; font-size: 30px; line-height: 30px;
-      text-align: center; color: #e91e63; animation: floatUp 6s linear;
-    }
-    @keyframes floatUp {
-      0% { transform: translateY(0); }
-      100% { transform: translateY(-110vh) rotate(360deg); }
-    }
-    @keyframes fallDown {
-      0% { transform: translateY(0) rotate(0deg); }
-      100% { transform: translateY(120vh) rotate(360deg); }
-    }
-    canvas#fireworks {
-      position: fixed; top: 0; left: 0;
-      width: 100%; height: 100%; pointer-events: none; z-index: 5;
-    }
-    #btn-play {
-      position: fixed; bottom: 20px; right: 20px;
-      background: #e91e63; color: white; border: none;
-      padding: 12px 20px; border-radius: 8px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-      font-size: 16px; cursor: pointer; z-index: 30;
-    }
-    @media (max-width: 500px) {
-      h1 { font-size: 18px; }
-      #message { font-size: 14px; }
-      #btn-play { padding: 10px 16px; font-size: 14px; }
-    }
-  </style>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Selamat Ulang Tahun, Rismawati! 🎉</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #e91e63; /* Warna merah muda */
+            --accent-color: #ffc107; /* Warna kuning */
+            --text-color: #333;
+            --background-gradient: linear-gradient(135deg, #fceabb, #fbefcc); /* Gradient background */
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: var(--background-gradient); /* Menggunakan gradient */
+            font-family: 'Poppins', sans-serif;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh; /* Pastikan body mengambil tinggi penuh viewport */
+            position: relative;
+        }
+
+        .container {
+            position: relative;
+            z-index: 10;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 25px 30px;
+            border-radius: 25px; /* Sedikit lebih melengkung */
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2); /* Bayangan lebih halus */
+            text-align: center;
+            max-width: 90%;
+            width: 450px; /* Lebar yang sedikit lebih besar */
+            margin: 20px; /* Margin responsif */
+            animation: fadeIn 1s ease-out; /* Animasi fade-in */
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h1 {
+            font-size: clamp(22px, 5vw, 32px); /* Responsif font-size */
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+
+        #message {
+            min-height: 60px;
+            font-size: clamp(16px, 4vw, 20px); /* Responsif font-size */
+            color: var(--text-color);
+            margin-bottom: 20px;
+            transition: all 0.5s ease;
+            font-weight: 500;
+        }
+
+        #joke-note {
+            position: fixed; /* Menggunakan fixed agar tidak terpengaruh scrolling */
+            padding: 15px 20px;
+            background: #fffbe6; /* Warna yang lebih cerah */
+            color: var(--text-color);
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            display: none;
+            z-index: 20;
+            max-width: 300px; /* Lebar maksimum yang lebih besar */
+            white-space: pre-wrap;
+            font-size: clamp(14px, 3.5vw, 16px);
+            line-height: 1.6;
+            text-align: left;
+            border: 1px solid #ffeb3b; /* Border tipis */
+        }
+
+        .balloon, .petal, .love {
+            position: absolute;
+            bottom: -50px; /* Dimulai sedikit di bawah layar */
+            opacity: 0.8;
+            pointer-events: none; /* Tidak bisa diklik */
+        }
+
+        .balloon {
+            width: clamp(25px, 6vw, 40px);
+            height: clamp(35px, 9vw, 60px);
+            border-radius: 50%;
+            animation: floatUp 8s linear infinite; /* Animasi berulang */
+            box-shadow: inset -5px -5px 10px rgba(0,0,0,0.2);
+        }
+        .balloon::before {
+            content: '';
+            position: absolute;
+            width: 2px;
+            height: 30px; /* Tali balon */
+            background: rgba(0,0,0,0.3);
+            bottom: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .petal {
+            width: clamp(15px, 4vw, 25px);
+            height: clamp(15px, 4vw, 25px);
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, #ff99cc, #ff66aa);
+            animation: fallDown 10s linear infinite; /* Animasi berulang */
+            opacity: 0.7;
+        }
+
+        .love {
+            width: clamp(20px, 5vw, 35px);
+            height: clamp(20px, 5vw, 35px);
+            font-size: clamp(20px, 5vw, 35px);
+            line-height: 1;
+            text-align: center;
+            color: var(--primary-color);
+            animation: floatUp 6s linear infinite; /* Animasi berulang */
+            transform-origin: center;
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(0); opacity: 0; }
+            20% { opacity: 1; }
+            100% { transform: translateY(-120vh) rotate(360deg); opacity: 0; }
+        }
+
+        @keyframes fallDown {
+            0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+            20% { opacity: 0.8; }
+            100% { transform: translateY(120vh) rotate(720deg); opacity: 0; }
+        }
+
+        canvas#fireworks {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 5;
+        }
+
+        #btn-play {
+            display: none; /* Sembunyikan tombol secara default */
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 30px; /* Lebih bulat */
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            font-size: 16px;
+            cursor: pointer;
+            z-index: 30;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            letter-spacing: 0.5px;
+        }
+
+        #btn-play:hover {
+            background: #d81b60; /* Sedikit lebih gelap saat hover */
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+        }
+
+        #btn-play:active {
+            transform: translateY(0);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+            }
+            #btn-play {
+                padding: 10px 20px;
+                font-size: 14px;
+                bottom: 15px;
+                right: 15px;
+            }
+            #joke-note {
+                max-width: 80%; /* Batasi lebar pada layar kecil */
+                padding: 12px 15px;
+            }
+        }
+    </style>
 </head>
 <body>
-  <div class="container">
-    <h1>🎉 Selamat Ulang Tahun, Rismawati! 🎉</h1>
-    <p id="message">Semoga harimu menyenangkan! 😊</p>
-  </div>
+    <div class="container">
+        <h4>🎉 Selamat Ulang Tahun, Rismawati! 🎉</h4>
+        <p id="message">Semoga harimu menyenangkan! 😊</p>
+    </div>
 
-  <div id="joke-note"></div>
-  <canvas id="fireworks"></canvas>
+    <div id="joke-note"></div>
+    <canvas id="fireworks"></canvas>
 
-  <!-- Audio Background (muted autoplay untuk load) -->
-  <audio id="bg-music" autoplay loop muted playsinline>
-    <source src="./musik/india.m4a" type="audio/mp4">
-    Browser Anda tidak mendukung audio.
-  </audio>
+    <audio id="bg-music" loop playsinline>
+        <source src="./musik/india.m4a" type="audio/mp4">
+        Browser Anda tidak mendukung audio.
+    </audio>
 
-  <!-- Tombol Play -->
-  <button id="btn-play">▶️ Play Musik</button>
+    <button id="btn-play">▶️ Play Musik</button>
 
-  <script>
-    // Setup Fireworks & Animations (sama seperti sebelumnya) …
-    const canvas = document.getElementById('fireworks');
-    const ctx = canvas.getContext('2d');
-    function resize() { canvas.width = innerWidth; canvas.height = innerHeight; }
-    window.addEventListener('resize', resize);
-    resize();
+    <script>
+        // --- Setup Fireworks ---
+        const canvas = document.getElementById('fireworks');
+        const ctx = canvas.getContext('2d');
 
-    class Particle {
-      constructor(x,y,dx,dy,color){
-        this.x=x;this.y=y;this.dx=dx;this.dy=dy;this.alpha=1;this.color=color;
-      }
-      update(){ this.x+=this.dx; this.y+=this.dy; this.alpha-=0.02; }
-      draw(){
-        ctx.save();
-        ctx.globalAlpha=this.alpha;
-        ctx.fillStyle=this.color;
-        ctx.beginPath();
-        ctx.arc(this.x,this.y,2,0,Math.PI*2);
-        ctx.fill();
-        ctx.restore();
-      }
-    }
-    function triggerFireworks(){
-      const particles=[],
-            x=Math.random()*canvas.width,
-            y=Math.random()*(canvas.height/2);
-      for(let i=0;i<100;i++){
-        const angle=Math.random()*Math.PI*2,
-              speed=2+Math.random()*2;
-        particles.push(new Particle(
-          x,y,
-          Math.cos(angle)*speed,
-          Math.sin(angle)*speed,
-          `hsl(${Math.random()*360},100%,50%)`
-        ));
-      }
-      (function animate(){
-        ctx.clearRect(0,0,canvas.width,canvas.height);
-        particles.forEach((p,i)=>{
-          p.update(); p.draw();
-          if(p.alpha<=0) particles.splice(i,1);
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas(); // Panggil saat inisialisasi
+
+        class Particle {
+            constructor(x, y, dx, dy, color) {
+                this.x = x;
+                this.y = y;
+                this.dx = dx;
+                this.dy = dy;
+                this.alpha = 1;
+                this.color = color;
+                this.gravity = 0.05; // Sedikit gravitasi
+                this.friction = 0.99; // Sedikit gesekan
+            }
+
+            update() {
+                this.dx *= this.friction;
+                this.dy *= this.friction;
+                this.dy += this.gravity;
+                this.x += this.dx;
+                this.y += this.dy;
+                this.alpha -= 0.015; // Lebih lambat memudar
+            }
+
+            draw() {
+                ctx.save();
+                ctx.globalAlpha = Math.max(0, this.alpha); // Pastikan alpha tidak negatif
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, 2, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.restore();
+            }
+        }
+
+        const fireworksParticles = [];
+        function triggerFireworks() {
+            const x = Math.random() * canvas.width;
+            const y = Math.random() * (canvas.height * 0.7); // Di bagian atas layar
+            const color = `hsl(${Math.random() * 360}, 100%, 70%)`; // Warna lebih cerah
+
+            for (let i = 0; i < 80; i++) { // Lebih sedikit partikel untuk performa
+                const angle = Math.random() * Math.PI * 2;
+                const speed = 2 + Math.random() * 3;
+                fireworksParticles.push(new Particle(
+                    x, y,
+                    Math.cos(angle) * speed,
+                    Math.sin(angle) * speed,
+                    color
+                ));
+            }
+        }
+
+        function animateFireworks() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for (let i = fireworksParticles.length - 1; i >= 0; i--) {
+                const p = fireworksParticles[i];
+                p.update();
+                p.draw();
+                if (p.alpha <= 0) {
+                    fireworksParticles.splice(i, 1);
+                }
+            }
+            requestAnimationFrame(animateFireworks);
+        }
+        animateFireworks(); // Mulai animasi fireworks
+
+        // Trigger fireworks setiap 2.5 - 4.5 detik
+        setInterval(triggerFireworks, 2500 + Math.random() * 2000);
+
+        // --- Animasi Latar Belakang (Balon, Kelopak, Hati) ---
+        function generateFloatingElements(type, count, minDuration, maxDuration) {
+            for (let i = 0; i < count; i++) {
+                const el = document.createElement('div');
+                el.className = type;
+                el.style.left = Math.random() * window.innerWidth + 'px';
+                el.style.animationDuration = `${minDuration + Math.random() * (maxDuration - minDuration)}s`;
+
+                if (type === 'balloon') {
+                    el.style.background = `radial-gradient(circle at 30% 30%, hsl(${Math.random() * 360}, 90%, 70%), hsl(${Math.random() * 360}, 70%, 50%))`;
+                }
+                document.body.append(el);
+
+                // Hapus elemen setelah animasinya selesai
+                el.addEventListener('animationend', () => {
+                    el.remove();
+                });
+            }
+        }
+
+        // Generate elemen secara berkala
+        setInterval(() => {
+            generateFloatingElements('balloon', 3, 8, 12); // 3 balon setiap 2 detik
+            generateFloatingElements('petal', 4, 10, 15); // 4 kelopak setiap 2 detik
+            generateFloatingElements('love', 2, 6, 9); // 2 hati setiap 2 detik
+        }, 2000);
+
+        // --- Perubahan Pesan ---
+        const messages = [
+            "Semoga hari-harimu dipenuhi bahagia dan tawa! 🎂",
+            "Panjang umur, sehat selalu, rezeki berlimpah! 💖",
+            "Semoga mimpi indahmu menjadi nyata tahun ini! ✨",
+            "Terus menjadi inspirasi bagi banyak orang! 🌟",
+            "Kamu sangat berarti, jangan pernah ragu! 🌈",
+            "Selalu tersenyum karena dunia butuh sinarmu! 😊"
+        ];
+        let msgIdx = 0;
+        setInterval(() => {
+            const messageEl = document.getElementById('message');
+            messageEl.style.opacity = 0; // Fade out
+            setTimeout(() => {
+                messageEl.textContent = messages[msgIdx];
+                messageEl.style.opacity = 1; // Fade in
+                msgIdx = (msgIdx + 1) % messages.length;
+            }, 500); // Tunggu setengah detik untuk fade out sebelum ganti teks
+        }, 3000);
+
+        // --- Lelucon Berurutan (Tekateki) ---
+        const jokes = [
+            { q: "Kenapa aku suka hujan?", a: "Karena hujan mengingatkanku akan pelukanmu yang hangat." },
+            { q: "Kenapa kamu kayak teh manis?", a: "Soalnya bikin candu tiap hari pengen terus." },
+            { q: "Kenapa aku sering senyum sendiri?", a: "Karena mikirin kamu." },
+            { q: "Apa bedanya kamu sama bintang?", a: "Bintang cuma bersinar di langit, kamu bersinar di hatiku." },
+            { q: "Kenapa aku betah di rumah?", a: "Karena di rumah ada kamu di pikiran." },
+            { q: "Apa persamaan kamu dan senja?", a: "Sama-sama bikin hati tenang." },
+            { q: "Kenapa aku suka malam?", a: "Karena malam mengingatkanku pada kenangan denganmu." },
+            { q: "Kenapa chat kamu nggak pernah bikin bosen?", a: "Karena setiap kata dari kamu tuh bikin deg-degan." },
+            { q: "Apa bedanya kamu sama es krim?", a: "Es krim mencair di lidah, kamu mencairkan hatiku." },
+            { q: "Kalau kamu jadi lagu, kamu jadi apa?", a: "Lagu yang tak pernah bosan kuputar." },
+            { q: "Kenapa aku nggak pernah takut gelap?", a: "Karena kamu selalu jadi cahaya di hati." },
+            { q: "Apa bedanya kamu dan matahari?", a: "Matahari menerangi dunia, kamu menerangi hariku." },
+            { q: "Kalau kamu jadi kopi?", a: "Kamu yang bikin aku semangat tiap pagi." },
+            { q: "Apa kamu tahu kenapa aku rajin berdoa?", a: "Supaya kamu jadi jodohku." },
+            { q: "Kenapa aku nggak suka hujan deras?", a: "Karena kamu belum bisa kuajak berteduh bareng." }
+        ];
+        let jokeIndex = 0;
+        let currentTypeTimeouts = []; // Menggunakan array terpisah untuk typeTimeouts
+
+        function typeText(el, txt, delay = 50, callback = null) {
+            let i = 0;
+            el.textContent = '';
+            // Clear previous timeouts for this typing effect
+            currentTypeTimeouts.forEach(t => clearTimeout(t));
+            currentTypeTimeouts = [];
+
+            function typeChar() {
+                if (i < txt.length) {
+                    el.textContent += txt.charAt(i++);
+                    currentTypeTimeouts.push(setTimeout(typeChar, delay));
+                } else if (callback) {
+                    callback();
+                }
+            }
+            typeChar();
+        }
+
+        function showNextJoke() {
+            const note = document.getElementById('joke-note');
+            const joke = jokes[jokeIndex];
+            jokeIndex = (jokeIndex + 1) % jokes.length;
+
+            // Posisi acak yang lebih responsif
+            const noteWidth = 300; // Estimasi lebar max note
+            const noteHeight = 150; // Estimasi tinggi max note
+            note.style.left = `${Math.random() * (window.innerWidth - noteWidth - 40) + 20}px`;
+            note.style.top = `${Math.random() * (window.innerHeight - noteHeight - 40) + 20}px`;
+            note.style.display = 'block';
+            note.style.opacity = 0;
+            note.style.transform = 'scale(0.8)';
+            setTimeout(() => {
+                note.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                note.style.opacity = 1;
+                note.style.transform = 'scale(1)';
+            }, 10); // Kecilkan delay untuk transisi
+
+            typeText(note, joke.q, 50, () => {
+                setTimeout(() => {
+                    typeText(note, joke.q + "\n\n👉 " + joke.a, 40, () => {
+                        setTimeout(() => {
+                            note.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                            note.style.opacity = 0;
+                            note.style.transform = 'scale(0.8)';
+                            setTimeout(() => {
+                                note.style.display = 'none';
+                                setTimeout(showNextJoke, 2000); // Tunggu 2 detik sebelum joke berikutnya
+                            }, 500); // Tunggu transisi fade out selesai
+                        }, 5000); // Durasi tampil joke (5 detik setelah jawaban muncul)
+                    });
+                }, 3000); // Jeda sebelum jawaban muncul
+            });
+        }
+        setTimeout(showNextJoke, 2000); // Mulai joke pertama setelah 2 detik
+
+        // --- Autoplay & Kontrol Musik ---
+        const audio = document.getElementById('bg-music');
+        const btnPlay = document.getElementById('btn-play');
+        let audioPlayed = false; // Flag untuk melacak status pemutaran audio
+
+        function attemptPlayAudio() {
+            if (audioPlayed) return; // Jika sudah diputar, jangan coba lagi
+
+            audio.play().then(() => {
+                console.log('Musik berhasil diputar.');
+                btnPlay.style.display = 'none'; // Sembunyikan tombol jika berhasil
+                audioPlayed = true;
+            }).catch(error => {
+                console.warn('Autoplay musik diblokir atau gagal:', error);
+                btnPlay.style.display = 'block'; // Tampilkan tombol jika gagal
+                btnPlay.textContent = '▶️ Play Musik';
+            });
+        }
+
+        // Coba putar audio setelah meta data dimuat (lebih cepat dari canplaythrough)
+        audio.addEventListener('loadedmetadata', attemptPlayAudio, { once: true });
+
+        // Event listener untuk tombol play
+        btnPlay.addEventListener('click', () => {
+            if (audio.paused) {
+                attemptPlayAudio();
+            }
         });
-        if(particles.length) requestAnimationFrame(animate);
-      })();
-    }
-    setInterval(()=>{ generateBalloons(5); generatePetals(5); generateLoves(3); },2000);
-    setInterval(triggerFireworks,3000);
-    function generateBalloons(n){ for(let i=0;i<n;i++){
-      const b=document.createElement('div');
-      b.className='balloon';
-      b.style.left=Math.random()*innerWidth+'px';
-      b.style.background=`hsl(${Math.random()*360},80%,60%)`;
-      b.style.animationDuration=6+Math.random()*4+'s';
-      document.body.append(b);
-      setTimeout(()=>b.remove(),10000);
-    }}
-    function generatePetals(n){ for(let i=0;i<n;i++){
-      const p=document.createElement('div');
-      p.className='petal';
-      p.style.left=Math.random()*innerWidth+'px';
-      p.style.animationDuration=8+Math.random()*5+'s';
-      document.body.append(p);
-      setTimeout(()=>p.remove(),12000);
-    }}
-    function generateLoves(n){ for(let i=0;i<n;i++){
-      const l=document.createElement('div');
-      l.className='love';
-      l.style.left=Math.random()*innerWidth+'px';
-      l.textContent='❤️';
-      l.style.animationDuration=5+Math.random()*3+'s';
-      document.body.append(l);
-      setTimeout(()=>l.remove(),8000);
-    }}
 
-    // Ganti pesan setiap 3 detik
-    const messages = [
-      "Semoga hari-harimu dipenuhi bahagia dan tawa! 🎂",
-      "Panjang umur, sehat selalu, rezeki berlimpah! 💖",
-      "Semoga mimpi indahmu menjadi nyata tahun ini! ✨",
-      "Terus menjadi inspirasi bagi banyak orang! 🌟",
-      "Kamu sangat berarti, jangan pernah ragu! 🌈",
-      "Selalu tersenyum karena dunia butuh sinarmu! 😊"
-    ];
-    let msgIdx=0;
-    setInterval(()=>{
-      document.getElementById('message').textContent = messages[msgIdx];
-      msgIdx = (msgIdx+1)%messages.length;
-    },3000);
+        // Event listener interaksi awal pengguna (untuk iOS/Safari)
+        document.addEventListener('touchstart', attemptPlayAudio, { once: true });
+        document.addEventListener('mousedown', attemptPlayAudio, { once: true });
 
-    // Lelucon berurutan
-    const jokes = [
-      { q: "Kenapa aku suka hujan?", a: "Karena hujan mengingatkanku akan pelukanmu yang hangat." },
-      { q: "Kenapa kamu kayak teh manis?", a: "Soalnya bikin candu tiap hari pengen terus." },
-      { q: "Kenapa aku sering senyum sendiri?", a: "Karena mikirin kamu." },
-      { q: "Apa bedanya kamu sama bintang?", a: "Bintang cuma bersinar di langit, kamu bersinar di hatiku." },
-      { q: "Kenapa aku betah di rumah?", a: "Karena di rumah ada kamu di pikiran." },
-      { q: "Apa persamaan kamu dan senja?", a: "Sama-sama bikin hati tenang." },
-      { q: "Kenapa aku suka malam?", a: "Karena malam mengingatkanku pada kenangan denganmu." },
-      { q: "Kenapa chat kamu nggak pernah bikin bosen?", a: "Karena setiap kata dari kamu tuh bikin deg-degan." },
-      { q: "Apa bedanya kamu sama es krim?", a: "Es krim mencair di lidah, kamu mencairkan hatiku." },
-      { q: "Kalau kamu jadi lagu, kamu jadi apa?", a: "Lagu yang tak pernah bosan kuputar." },
-      { q: "Kenapa aku nggak pernah takut gelap?", a: "Karena kamu selalu jadi cahaya di hati." },
-      { q: "Apa bedanya kamu dan matahari?", a: "Matahari menerangi dunia, kamu menerangi hariku." },
-      { q: "Kalau kamu jadi kopi?", a: "Kamu yang bikin aku semangat tiap pagi." },
-      { q: "Apa kamu tahu kenapa aku rajin berdoa?", a: "Supaya kamu jadi jodohku." },
-      { q: "Kenapa aku nggak suka hujan deras?", a: "Karena kamu belum bisa kuajak berteduh bareng." }
-    ];
-    let jokeIndex=0, typeTimeouts=[];
-    function typeText(el, txt, d=50, cb=null){
-      let i=0; el.textContent='';
-      function tipe(){
-        if(i<txt.length) el.textContent+=txt.charAt(i++);
-        typeTimeouts.push(setTimeout(tipe,d));
-        if(i>=txt.length && cb) cb();
-      }
-      tipe();
-    }
-    function showNextJoke(){
-      const note=document.getElementById('joke-note');
-      typeTimeouts.forEach(t=>clearTimeout(t)); typeTimeouts=[];
-      const j=jokes[jokeIndex];
-      jokeIndex=(jokeIndex+1)%jokes.length;
-      note.style.left = Math.random()*(innerWidth-250)+'px';
-      note.style.top  = Math.random()*(innerHeight-100)+'px';
-      note.style.display='block';
-      typeText(note, j.q, 50, ()=>{
-        setTimeout(()=>{
-          typeText(note, j.q + "\n\n👉 " + j.a, 40, ()=>{
-            setTimeout(()=>{
-              note.style.display='none';
-              setTimeout(showNextJoke,2000);
-            },5000);
-          });
-        },3000);
-      });
-    }
-    setTimeout(showNextJoke,2000);
-
-    // Tombol Play Musik
-    const btn = document.getElementById('btn-play');
-    const audio = document.getElementById('bg-music');
-    btn.addEventListener('click', () => {
-      if (audio.paused) {
-        audio.muted = false;
-        audio.play();
-        btn.textContent = '⏸️ Pause Musik';
-      } else {
-        audio.pause();
-        btn.textContent = '▶️ Play Musik';
-      }
-    });
-  </script>
+        // Fallback jika semua gagal, tampilkan tombol play
+        setTimeout(() => {
+            if (!audioPlayed) {
+                btnPlay.style.display = 'block';
+            }
+        }, 3000); // Beri waktu 3 detik untuk autoplay mencoba
+    </script>
 </body>
 </html>
