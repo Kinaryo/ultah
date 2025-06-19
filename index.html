@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Selamat Ulang Tahun Rismawati!</title>
+  <title>Selamat Ulang Tahun, Rismawati!</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
@@ -53,27 +53,15 @@
       bottom: -100px;
       opacity: 0.8;
     }
-    .balloon {
-      width: 30px;
-      height: 45px;
-      border-radius: 50%;
-      animation: floatUp 8s linear;
-    }
+    .balloon { width: 30px; height: 45px; border-radius: 50%; animation: floatUp 8s linear; }
     .petal {
-      width: 20px;
-      height: 20px;
-      border-radius: 50%;
+      width: 20px; height: 20px; border-radius: 50%;
       background: radial-gradient(circle at 30% 30%, #ff99cc, #ff66aa);
       animation: fallDown 10s linear;
     }
     .love {
-      width: 30px;
-      height: 30px;
-      font-size: 30px;
-      line-height: 30px;
-      text-align: center;
-      color: #e91e63;
-      animation: floatUp 6s linear;
+      width: 30px; height: 30px; font-size: 30px; line-height: 30px;
+      text-align: center; color: #e91e63; animation: floatUp 6s linear;
     }
     @keyframes floatUp {
       0% { transform: translateY(0); }
@@ -84,17 +72,20 @@
       100% { transform: translateY(120vh) rotate(360deg); }
     }
     canvas#fireworks {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-      z-index: 5;
+      position: fixed; top: 0; left: 0;
+      width: 100%; height: 100%; pointer-events: none; z-index: 5;
+    }
+    #btn-play {
+      position: fixed; bottom: 20px; right: 20px;
+      background: #e91e63; color: white; border: none;
+      padding: 12px 20px; border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      font-size: 16px; cursor: pointer; z-index: 30;
     }
     @media (max-width: 500px) {
       h1 { font-size: 18px; }
       #message { font-size: 14px; }
+      #btn-play { padding: 10px 16px; font-size: 14px; }
     }
   </style>
 </head>
@@ -107,20 +98,17 @@
   <div id="joke-note"></div>
   <canvas id="fireworks"></canvas>
 
+  <!-- Audio Background (muted autoplay untuk load) -->
   <audio id="bg-music" autoplay loop muted playsinline>
-    <source src="musik/india.m4a" type="audio/mp4">
-    <source src="musik/india.mp3" type="audio/mpeg">
+    <source src="./musik/india.m4a" type="audio/mp4">
     Browser Anda tidak mendukung audio.
   </audio>
 
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const audio = document.getElementById('bg-music');
-      audio.muted = false; // coba unmute setelah load
-      audio.play().catch(err => console.warn('Autoplay gagal:', err));
-    });
+  <!-- Tombol Play -->
+  <button id="btn-play">▶️ Play Musik</button>
 
-    // Fireworks setup
+  <script>
+    // Setup Fireworks & Animations (sama seperti sebelumnya) …
     const canvas = document.getElementById('fireworks');
     const ctx = canvas.getContext('2d');
     function resize() { canvas.width = innerWidth; canvas.height = innerHeight; }
@@ -128,36 +116,73 @@
     resize();
 
     class Particle {
-      constructor(x, y, dx, dy, color) { this.x = x; this.y = y; this.dx = dx; this.dy = dy; this.alpha = 1; this.color = color; }
-      update() { this.x += this.dx; this.y += this.dy; this.alpha -= 0.02; }
-      draw() { ctx.save(); ctx.globalAlpha = this.alpha; ctx.fillStyle = this.color; ctx.beginPath(); ctx.arc(this.x, this.y, 2, 0, Math.PI * 2); ctx.fill(); ctx.restore(); }
-    }
-
-    function triggerFireworks() {
-      const particles = [];
-      const x = Math.random() * canvas.width;
-      const y = Math.random() * canvas.height / 2;
-      for (let i = 0; i < 100; i++) {
-        const angle = Math.random() * Math.PI * 2;
-        const speed = 2 + Math.random() * 2;
-        particles.push(new Particle(x, y, Math.cos(angle) * speed, Math.sin(angle) * speed, `hsl(${Math.random() * 360},100%,50%)`));
+      constructor(x,y,dx,dy,color){
+        this.x=x;this.y=y;this.dx=dx;this.dy=dy;this.alpha=1;this.color=color;
       }
-      (function animate() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        particles.forEach((p, i) => { p.update(); p.draw(); if (p.alpha <= 0) particles.splice(i, 1); });
-        if (particles.length) requestAnimationFrame(animate);
+      update(){ this.x+=this.dx; this.y+=this.dy; this.alpha-=0.02; }
+      draw(){
+        ctx.save();
+        ctx.globalAlpha=this.alpha;
+        ctx.fillStyle=this.color;
+        ctx.beginPath();
+        ctx.arc(this.x,this.y,2,0,Math.PI*2);
+        ctx.fill();
+        ctx.restore();
+      }
+    }
+    function triggerFireworks(){
+      const particles=[],
+            x=Math.random()*canvas.width,
+            y=Math.random()*(canvas.height/2);
+      for(let i=0;i<100;i++){
+        const angle=Math.random()*Math.PI*2,
+              speed=2+Math.random()*2;
+        particles.push(new Particle(
+          x,y,
+          Math.cos(angle)*speed,
+          Math.sin(angle)*speed,
+          `hsl(${Math.random()*360},100%,50%)`
+        ));
+      }
+      (function animate(){
+        ctx.clearRect(0,0,canvas.width,canvas.height);
+        particles.forEach((p,i)=>{
+          p.update(); p.draw();
+          if(p.alpha<=0) particles.splice(i,1);
+        });
+        if(particles.length) requestAnimationFrame(animate);
       })();
     }
+    setInterval(()=>{ generateBalloons(5); generatePetals(5); generateLoves(3); },2000);
+    setInterval(triggerFireworks,3000);
+    function generateBalloons(n){ for(let i=0;i<n;i++){
+      const b=document.createElement('div');
+      b.className='balloon';
+      b.style.left=Math.random()*innerWidth+'px';
+      b.style.background=`hsl(${Math.random()*360},80%,60%)`;
+      b.style.animationDuration=6+Math.random()*4+'s';
+      document.body.append(b);
+      setTimeout(()=>b.remove(),10000);
+    }}
+    function generatePetals(n){ for(let i=0;i<n;i++){
+      const p=document.createElement('div');
+      p.className='petal';
+      p.style.left=Math.random()*innerWidth+'px';
+      p.style.animationDuration=8+Math.random()*5+'s';
+      document.body.append(p);
+      setTimeout(()=>p.remove(),12000);
+    }}
+    function generateLoves(n){ for(let i=0;i<n;i++){
+      const l=document.createElement('div');
+      l.className='love';
+      l.style.left=Math.random()*innerWidth+'px';
+      l.textContent='❤️';
+      l.style.animationDuration=5+Math.random()*3+'s';
+      document.body.append(l);
+      setTimeout(()=>l.remove(),8000);
+    }}
 
-    setInterval(() => { generateBalloons(5); generatePetals(5); generateLoves(3); }, 2000);
-    setInterval(triggerFireworks, 3000);
-
-    // Balloons, petals, loves
-    function generateBalloons(count) { for (let i = 0; i < count; i++) { const b = document.createElement('div'); b.className = 'balloon'; b.style.left = Math.random() * innerWidth + 'px'; b.style.background = `hsl(${Math.random() * 360}, 80%, 60%)`; b.style.animationDuration = 6 + Math.random() * 4 + 's'; document.body.append(b); setTimeout(() => b.remove(), 10000); } }
-    function generatePetals(count) { for (let i = 0; i < count; i++) { const p = document.createElement('div'); p.className = 'petal'; p.style.left = Math.random() * innerWidth + 'px'; p.style.animationDuration = 8 + Math.random() * 5 + 's'; document.body.append(p); setTimeout(() => p.remove(), 12000); } }
-    function generateLoves(count) { for (let i = 0; i < count; i++) { const l = document.createElement('div'); l.className = 'love'; l.style.left = Math.random() * innerWidth + 'px'; l.textContent = '❤️'; l.style.animationDuration = 5 + Math.random() * 3 + 's'; document.body.append(l); setTimeout(() => l.remove(), 8000); } }
-
-    // Messages
+    // Ganti pesan setiap 3 detik
     const messages = [
       "Semoga hari-harimu dipenuhi bahagia dan tawa! 🎂",
       "Panjang umur, sehat selalu, rezeki berlimpah! 💖",
@@ -166,11 +191,13 @@
       "Kamu sangat berarti, jangan pernah ragu! 🌈",
       "Selalu tersenyum karena dunia butuh sinarmu! 😊"
     ];
-    let msgIdx = 0;
-    const msgEl = document.getElementById('message');
-    setInterval(() => { msgEl.textContent = messages[msgIdx]; msgIdx = (msgIdx + 1) % messages.length; }, 3000);
+    let msgIdx=0;
+    setInterval(()=>{
+      document.getElementById('message').textContent = messages[msgIdx];
+      msgIdx = (msgIdx+1)%messages.length;
+    },3000);
 
-    // Jokes
+    // Lelucon berurutan
     const jokes = [
       { q: "Kenapa aku suka hujan?", a: "Karena hujan mengingatkanku akan pelukanmu yang hangat." },
       { q: "Kenapa kamu kayak teh manis?", a: "Soalnya bikin candu tiap hari pengen terus." },
@@ -188,48 +215,50 @@
       { q: "Apa kamu tahu kenapa aku rajin berdoa?", a: "Supaya kamu jadi jodohku." },
       { q: "Kenapa aku nggak suka hujan deras?", a: "Karena kamu belum bisa kuajak berteduh bareng." }
     ];
-    let jokeIndex = 0;
-    let typeTimeouts = [];
-
-    function typeText(element, text, delay = 50, callback = null) {
-      let i = 0;
-      element.textContent = '';
-      function typing() {
-        if (i < text.length) {
-          element.textContent += text.charAt(i++);
-          typeTimeouts.push(setTimeout(typing, delay));
-        } else if (callback) {
-          callback();
-        }
+    let jokeIndex=0, typeTimeouts=[];
+    function typeText(el, txt, d=50, cb=null){
+      let i=0; el.textContent='';
+      function tipe(){
+        if(i<txt.length) el.textContent+=txt.charAt(i++);
+        typeTimeouts.push(setTimeout(tipe,d));
+        if(i>=txt.length && cb) cb();
       }
-      typing();
+      tipe();
     }
-
-    function showNextJoke() {
-      const joke = jokes[jokeIndex];
-      jokeIndex = (jokeIndex + 1) % jokes.length;
-      const jokeNote = document.getElementById('joke-note');
-      // Clear previous typing
-      typeTimeouts.forEach(t => clearTimeout(t));
-      typeTimeouts = [];
-      // Position
-      jokeNote.style.left = Math.random() * (window.innerWidth - 250) + 'px';
-      jokeNote.style.top = Math.random() * (window.innerHeight - 100) + 'px';
-      jokeNote.style.display = 'block';
-      // Show question
-      typeText(jokeNote, joke.q, 50, () => {
-        // After question shown, wait 3s then show answer
-        setTimeout(() => {
-          typeText(jokeNote, joke.q + "\n\n👉 " + joke.a, 40, () => {
-            // After answer, wait 5s then hide and schedule next
-            setTimeout(() => { jokeNote.style.display = 'none'; setTimeout(showNextJoke, 2000); }, 5000);
+    function showNextJoke(){
+      const note=document.getElementById('joke-note');
+      typeTimeouts.forEach(t=>clearTimeout(t)); typeTimeouts=[];
+      const j=jokes[jokeIndex];
+      jokeIndex=(jokeIndex+1)%jokes.length;
+      note.style.left = Math.random()*(innerWidth-250)+'px';
+      note.style.top  = Math.random()*(innerHeight-100)+'px';
+      note.style.display='block';
+      typeText(note, j.q, 50, ()=>{
+        setTimeout(()=>{
+          typeText(note, j.q + "\n\n👉 " + j.a, 40, ()=>{
+            setTimeout(()=>{
+              note.style.display='none';
+              setTimeout(showNextJoke,2000);
+            },5000);
           });
-        }, 3000);
+        },3000);
       });
     }
+    setTimeout(showNextJoke,2000);
 
-    // Mulai lelucon pertama setelah 2 detik
-    setTimeout(showNextJoke, 2000);
+    // Tombol Play Musik
+    const btn = document.getElementById('btn-play');
+    const audio = document.getElementById('bg-music');
+    btn.addEventListener('click', () => {
+      if (audio.paused) {
+        audio.muted = false;
+        audio.play();
+        btn.textContent = '⏸️ Pause Musik';
+      } else {
+        audio.pause();
+        btn.textContent = '▶️ Play Musik';
+      }
+    });
   </script>
 </body>
 </html>
