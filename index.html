@@ -46,14 +46,7 @@
       display: none;
       z-index: 20;
       max-width: 250px;
-      animation: fadeInOut 7s ease forwards;
       white-space: pre-wrap;
-    }
-    @keyframes fadeInOut {
-      0% {opacity: 0;}
-      10% {opacity: 1;}
-      90% {opacity: 1;}
-      100% {opacity: 0;}
     }
     .balloon, .petal, .love {
       position: absolute;
@@ -99,23 +92,9 @@
       pointer-events: none;
       z-index: 5;
     }
-    button {
-      margin: 10px 5px;
-      padding: 8px 16px;
-      background: #e91e63;
-      color: white;
-      border: none;
-      border-radius: 20px;
-      cursor: pointer;
-      transition: transform 0.2s;
-    }
-    button:hover {
-      transform: scale(1.05);
-    }
     @media (max-width: 500px) {
       h1 { font-size: 18px; }
       #message { font-size: 14px; }
-      button { padding: 6px 12px; font-size: 14px; }
     }
   </style>
 </head>
@@ -123,13 +102,12 @@
   <div class="container">
     <h1>🎉 Selamat Ulang Tahun, Rismawati! 🎉</h1>
     <p id="message">Semoga harimu menyenangkan! 😊</p>
-    <button id="joke-btn">Lelucon Cinta ❤️</button>
   </div>
 
   <div id="joke-note"></div>
   <canvas id="fireworks"></canvas>
 
-  <audio id="bg-music" autoplay loop muted>
+  <audio id="bg-music" autoplay loop muted playsinline>
     <source src="musik/india.m4a" type="audio/mp4">
     <source src="musik/india.mp3" type="audio/mpeg">
     Browser Anda tidak mendukung audio.
@@ -138,38 +116,21 @@
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       const audio = document.getElementById('bg-music');
-      audio.muted = false;
-      audio.play().catch(err => console.warn('Autoplay diblokir:', err));
+      audio.muted = false; // coba unmute setelah load
+      audio.play().catch(err => console.warn('Autoplay gagal:', err));
     });
 
+    // Fireworks setup
     const canvas = document.getElementById('fireworks');
     const ctx = canvas.getContext('2d');
-    function resize() {
-      canvas.width = innerWidth;
-      canvas.height = innerHeight;
-    }
+    function resize() { canvas.width = innerWidth; canvas.height = innerHeight; }
     window.addEventListener('resize', resize);
     resize();
 
     class Particle {
-      constructor(x, y, dx, dy, color) {
-        this.x = x; this.y = y; this.dx = dx; this.dy = dy;
-        this.alpha = 1; this.color = color;
-      }
-      update() {
-        this.x += this.dx;
-        this.y += this.dy;
-        this.alpha -= 0.02;
-      }
-      draw() {
-        ctx.save();
-        ctx.globalAlpha = this.alpha;
-        ctx.fillStyle = this.color;
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, 2, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.restore();
-      }
+      constructor(x, y, dx, dy, color) { this.x = x; this.y = y; this.dx = dx; this.dy = dy; this.alpha = 1; this.color = color; }
+      update() { this.x += this.dx; this.y += this.dy; this.alpha -= 0.02; }
+      draw() { ctx.save(); ctx.globalAlpha = this.alpha; ctx.fillStyle = this.color; ctx.beginPath(); ctx.arc(this.x, this.y, 2, 0, Math.PI * 2); ctx.fill(); ctx.restore(); }
     }
 
     function triggerFireworks() {
@@ -181,60 +142,22 @@
         const speed = 2 + Math.random() * 2;
         particles.push(new Particle(x, y, Math.cos(angle) * speed, Math.sin(angle) * speed, `hsl(${Math.random() * 360},100%,50%)`));
       }
-
       (function animate() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-        particles.forEach((p, i) => {
-          p.update();
-          p.draw();
-          if (p.alpha <= 0) particles.splice(i, 1);
-        });
+        particles.forEach((p, i) => { p.update(); p.draw(); if (p.alpha <= 0) particles.splice(i, 1); });
         if (particles.length) requestAnimationFrame(animate);
       })();
     }
 
-    function generateBalloons(count) {
-      for (let i = 0; i < count; i++) {
-        const b = document.createElement('div');
-        b.className = 'balloon';
-        b.style.left = Math.random() * innerWidth + 'px';
-        b.style.background = `hsl(${Math.random() * 360}, 80%, 60%)`;
-        b.style.animationDuration = 6 + Math.random() * 4 + 's';
-        document.body.append(b);
-        setTimeout(() => b.remove(), 10000);
-      }
-    }
-
-    function generatePetals(count) {
-      for (let i = 0; i < count; i++) {
-        const p = document.createElement('div');
-        p.className = 'petal';
-        p.style.left = Math.random() * innerWidth + 'px';
-        p.style.animationDuration = 8 + Math.random() * 5 + 's';
-        document.body.append(p);
-        setTimeout(() => p.remove(), 12000);
-      }
-    }
-
-    function generateLoves(count) {
-      for (let i = 0; i < count; i++) {
-        const l = document.createElement('div');
-        l.className = 'love';
-        l.style.left = Math.random() * innerWidth + 'px';
-        l.textContent = '❤️';
-        l.style.animationDuration = 5 + Math.random() * 3 + 's';
-        document.body.append(l);
-        setTimeout(() => l.remove(), 8000);
-      }
-    }
-
-    setInterval(() => {
-      generateBalloons(5);
-      generatePetals(5);
-      generateLoves(3);
-    }, 2000);
+    setInterval(() => { generateBalloons(5); generatePetals(5); generateLoves(3); }, 2000);
     setInterval(triggerFireworks, 3000);
 
+    // Balloons, petals, loves
+    function generateBalloons(count) { for (let i = 0; i < count; i++) { const b = document.createElement('div'); b.className = 'balloon'; b.style.left = Math.random() * innerWidth + 'px'; b.style.background = `hsl(${Math.random() * 360}, 80%, 60%)`; b.style.animationDuration = 6 + Math.random() * 4 + 's'; document.body.append(b); setTimeout(() => b.remove(), 10000); } }
+    function generatePetals(count) { for (let i = 0; i < count; i++) { const p = document.createElement('div'); p.className = 'petal'; p.style.left = Math.random() * innerWidth + 'px'; p.style.animationDuration = 8 + Math.random() * 5 + 's'; document.body.append(p); setTimeout(() => p.remove(), 12000); } }
+    function generateLoves(count) { for (let i = 0; i < count; i++) { const l = document.createElement('div'); l.className = 'love'; l.style.left = Math.random() * innerWidth + 'px'; l.textContent = '❤️'; l.style.animationDuration = 5 + Math.random() * 3 + 's'; document.body.append(l); setTimeout(() => l.remove(), 8000); } }
+
+    // Messages
     const messages = [
       "Semoga hari-harimu dipenuhi bahagia dan tawa! 🎂",
       "Panjang umur, sehat selalu, rezeki berlimpah! 💖",
@@ -245,11 +168,9 @@
     ];
     let msgIdx = 0;
     const msgEl = document.getElementById('message');
-    setInterval(() => {
-      msgEl.textContent = messages[msgIdx];
-      msgIdx = (msgIdx + 1) % messages.length;
-    }, 3000);
+    setInterval(() => { msgEl.textContent = messages[msgIdx]; msgIdx = (msgIdx + 1) % messages.length; }, 3000);
 
+    // Jokes
     const jokes = [
       { q: "Kenapa aku suka hujan?", a: "Karena hujan mengingatkanku akan pelukanmu yang hangat." },
       { q: "Kenapa kamu kayak teh manis?", a: "Soalnya bikin candu tiap hari pengen terus." },
@@ -267,31 +188,48 @@
       { q: "Apa kamu tahu kenapa aku rajin berdoa?", a: "Supaya kamu jadi jodohku." },
       { q: "Kenapa aku nggak suka hujan deras?", a: "Karena kamu belum bisa kuajak berteduh bareng." }
     ];
+    let jokeIndex = 0;
+    let typeTimeouts = [];
 
-    let jokeTimeout1, jokeTimeout2;
-    document.getElementById('joke-btn').addEventListener('click', () => {
-      clearTimeout(jokeTimeout1);
-      clearTimeout(jokeTimeout2);
+    function typeText(element, text, delay = 50, callback = null) {
+      let i = 0;
+      element.textContent = '';
+      function typing() {
+        if (i < text.length) {
+          element.textContent += text.charAt(i++);
+          typeTimeouts.push(setTimeout(typing, delay));
+        } else if (callback) {
+          callback();
+        }
+      }
+      typing();
+    }
 
-      const joke = jokes[Math.floor(Math.random() * jokes.length)];
+    function showNextJoke() {
+      const joke = jokes[jokeIndex];
+      jokeIndex = (jokeIndex + 1) % jokes.length;
       const jokeNote = document.getElementById('joke-note');
-
-      const x = Math.random() * (window.innerWidth - 250);
-      const y = Math.random() * (window.innerHeight - 100);
-      jokeNote.style.left = x + 'px';
-      jokeNote.style.top = y + 'px';
-
-      jokeNote.textContent = joke.q;
+      // Clear previous typing
+      typeTimeouts.forEach(t => clearTimeout(t));
+      typeTimeouts = [];
+      // Position
+      jokeNote.style.left = Math.random() * (window.innerWidth - 250) + 'px';
+      jokeNote.style.top = Math.random() * (window.innerHeight - 100) + 'px';
       jokeNote.style.display = 'block';
+      // Show question
+      typeText(jokeNote, joke.q, 50, () => {
+        // After question shown, wait 3s then show answer
+        setTimeout(() => {
+          typeText(jokeNote, joke.q + "\n\n👉 " + joke.a, 40, () => {
+            // After answer, wait 5s then hide and schedule next
+            setTimeout(() => { jokeNote.style.display = 'none'; setTimeout(showNextJoke, 2000); }, 5000);
+          });
+        }, 3000);
+      });
+    }
 
-      jokeTimeout1 = setTimeout(() => {
-        jokeNote.textContent = joke.q + "\n\n👉 " + joke.a;
-      }, 4000);
-
-      jokeTimeout2 = setTimeout(() => {
-        jokeNote.style.display = 'none';
-      }, 8000);
-    });
+    // Mulai lelucon pertama setelah 2 detik
+    setTimeout(showNextJoke, 2000);
   </script>
 </body>
 </html>
