@@ -20,35 +20,28 @@
         }
 
         body {
-            background: var(--background-gradient);
+            background: var(--background-gradient); /* Menggunakan gradient */
             font-family: 'Poppins', sans-serif;
             overflow: hidden;
             display: flex;
-            flex-direction: column; /* Mengatur flex direction menjadi kolom */
             justify-content: center;
             align-items: center;
-            min-height: 100vh;
+            min-height: 100vh; /* Pastikan body mengambil tinggi penuh viewport */
             position: relative;
-            gap: 20px; /* Jarak antar bagian */
         }
 
-        .card-ucapan, .puzzle-section {
+        .container {
             position: relative;
             z-index: 10;
             background: rgba(255, 255, 255, 0.95);
             padding: 25px 30px;
-            border-radius: 25px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            border-radius: 25px; /* Sedikit lebih melengkung */
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2); /* Bayangan lebih halus */
             text-align: center;
             max-width: 90%;
-            width: 450px;
-            margin: 0; /* Menghilangkan margin bawaan */
-            animation: fadeIn 1s ease-out;
-        }
-
-        .puzzle-section {
-            display: none; /* Sembunyikan puzzle secara default */
-            padding-top: 20px; /* Sedikit padding atas agar tidak terlalu mepet */
+            width: 450px; /* Lebar yang sedikit lebih besar */
+            margin: 20px; /* Margin responsif */
+            animation: fadeIn 1s ease-out; /* Animasi fade-in */
         }
 
         @keyframes fadeIn {
@@ -56,8 +49,8 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        h1, h4 {
-            font-size: clamp(22px, 5vw, 32px);
+        h1 {
+            font-size: clamp(22px, 5vw, 32px); /* Responsif font-size */
             color: var(--primary-color);
             margin-bottom: 20px;
             text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
@@ -65,71 +58,49 @@
 
         #message {
             min-height: 60px;
-            font-size: clamp(16px, 4vw, 20px);
+            font-size: clamp(16px, 4vw, 20px); /* Responsif font-size */
             color: var(--text-color);
             margin-bottom: 20px;
             transition: all 0.5s ease;
             font-weight: 500;
         }
 
-        .puzzle-card {
+        #joke-note {
+            position: fixed; /* Menggunakan fixed agar tidak terpengaruh scrolling */
             padding: 15px 20px;
-            background: #fffbe6;
+            background: #fffbe6; /* Warna yang lebih cerah */
             color: var(--text-color);
             border-radius: 15px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-            margin-top: 20px; /* Jarak dari atas puzzle-section */
+            display: none;
+            z-index: 20;
+            max-width: 300px; /* Lebar maksimum yang lebih besar */
             white-space: pre-wrap;
             font-size: clamp(14px, 3.5vw, 16px);
             line-height: 1.6;
             text-align: left;
-            border: 1px solid #ffeb3b;
-            min-height: 100px; /* Tinggi minimum untuk kartu teka-teki */
-            display: none; /* Sembunyikan secara default */
-        }
-
-        .puzzle-controls button {
-            background: var(--primary-color);
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 20px;
-            cursor: pointer;
-            font-size: 14px;
-            margin: 5px;
-            transition: all 0.3s ease;
-            font-weight: bold;
-        }
-
-        .puzzle-controls button:hover {
-            background: #d81b60;
-            transform: translateY(-1px);
-        }
-
-        .puzzle-controls button:active {
-            transform: translateY(0);
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            border: 1px solid #ffeb3b; /* Border tipis */
         }
 
         .balloon, .petal, .love {
             position: absolute;
-            bottom: -50px;
+            bottom: -50px; /* Dimulai sedikit di bawah layar */
             opacity: 0.8;
-            pointer-events: none;
+            pointer-events: none; /* Tidak bisa diklik */
         }
 
         .balloon {
             width: clamp(25px, 6vw, 40px);
             height: clamp(35px, 9vw, 60px);
             border-radius: 50%;
-            animation: floatUp 8s linear infinite;
+            animation: floatUp 8s linear infinite; /* Animasi berulang */
             box-shadow: inset -5px -5px 10px rgba(0,0,0,0.2);
         }
         .balloon::before {
             content: '';
             position: absolute;
             width: 2px;
-            height: 30px;
+            height: 30px; /* Tali balon */
             background: rgba(0,0,0,0.3);
             bottom: -25px;
             left: 50%;
@@ -141,7 +112,7 @@
             height: clamp(15px, 4vw, 25px);
             border-radius: 50%;
             background: radial-gradient(circle at 30% 30%, #ff99cc, #ff66aa);
-            animation: fallDown 10s linear infinite;
+            animation: fallDown 10s linear infinite; /* Animasi berulang */
             opacity: 0.7;
         }
 
@@ -152,7 +123,7 @@
             line-height: 1;
             text-align: center;
             color: var(--primary-color);
-            animation: floatUp 6s linear infinite;
+            animation: floatUp 6s linear infinite; /* Animasi berulang */
             transform-origin: center;
         }
 
@@ -178,7 +149,8 @@
             z-index: 5;
         }
 
-        #btn-music-toggle {
+        #btn-play {
+            display: none; /* Sembunyikan tombol secara default */
             position: fixed;
             bottom: 20px;
             right: 20px;
@@ -186,7 +158,7 @@
             color: white;
             border: none;
             padding: 12px 25px;
-            border-radius: 30px;
+            border-radius: 30px; /* Lebih bulat */
             box-shadow: 0 5px 15px rgba(0,0,0,0.3);
             font-size: 16px;
             cursor: pointer;
@@ -196,61 +168,49 @@
             letter-spacing: 0.5px;
         }
 
-        #btn-music-toggle:hover {
-            background: #d81b60;
+        #btn-play:hover {
+            background: #d81b60; /* Sedikit lebih gelap saat hover */
             transform: translateY(-2px);
             box-shadow: 0 8px 20px rgba(0,0,0,0.4);
         }
 
-        #btn-music-toggle:active {
+        #btn-play:active {
             transform: translateY(0);
             box-shadow: 0 4px 10px rgba(0,0,0,0.2);
         }
 
         @media (max-width: 600px) {
-            .card-ucapan, .puzzle-section {
+            .container {
                 padding: 20px;
             }
-            #btn-music-toggle {
+            #btn-play {
                 padding: 10px 20px;
                 font-size: 14px;
                 bottom: 15px;
                 right: 15px;
             }
-            .puzzle-card {
+            #joke-note {
+                max-width: 80%; /* Batasi lebar pada layar kecil */
                 padding: 12px 15px;
-            }
-            .puzzle-controls button {
-                padding: 8px 15px;
-                font-size: 12px;
             }
         }
     </style>
 </head>
 <body>
-    <div class="card-ucapan">
+    <div class="container">
         <h4>🎉 Selamat Ulang Tahun, Rismawati! 🎉</h4>
         <p id="message">Semoga harimu menyenangkan! 😊</p>
     </div>
 
-    <div class="puzzle-section">
-        <h3>Teka-teki Spesial! 🤔</h3>
-        <div class="puzzle-controls">
-            <button id="btn-start-puzzle">▶️ Main Teka-teki</button>
-            <button id="btn-show-answer" style="display:none;">Lihat Jawaban</button>
-            <button id="btn-next-puzzle" style="display:none;">Lanjut / Nyerah</button>
-        </div>
-        <div class="puzzle-card"></div>
-    </div>
-
+    <div id="joke-note"></div>
     <canvas id="fireworks"></canvas>
 
     <audio id="bg-music" loop playsinline>
-        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mp3">
+        <source src="./musik/india.m4a" type="audio/mp4">
         Browser Anda tidak mendukung audio.
     </audio>
 
-    <button id="btn-music-toggle">▶️ Play Musik</button>
+    <button id="btn-play">▶️ Play Musik</button>
 
     <script>
         // --- Setup Fireworks ---
@@ -262,7 +222,7 @@
             canvas.height = window.innerHeight;
         }
         window.addEventListener('resize', resizeCanvas);
-        resizeCanvas();
+        resizeCanvas(); // Panggil saat inisialisasi
 
         class Particle {
             constructor(x, y, dx, dy, color) {
@@ -272,8 +232,8 @@
                 this.dy = dy;
                 this.alpha = 1;
                 this.color = color;
-                this.gravity = 0.05;
-                this.friction = 0.99;
+                this.gravity = 0.05; // Sedikit gravitasi
+                this.friction = 0.99; // Sedikit gesekan
             }
 
             update() {
@@ -282,12 +242,12 @@
                 this.dy += this.gravity;
                 this.x += this.dx;
                 this.y += this.dy;
-                this.alpha -= 0.015;
+                this.alpha -= 0.015; // Lebih lambat memudar
             }
 
             draw() {
                 ctx.save();
-                ctx.globalAlpha = Math.max(0, this.alpha);
+                ctx.globalAlpha = Math.max(0, this.alpha); // Pastikan alpha tidak negatif
                 ctx.fillStyle = this.color;
                 ctx.beginPath();
                 ctx.arc(this.x, this.y, 2, 0, Math.PI * 2);
@@ -299,10 +259,10 @@
         const fireworksParticles = [];
         function triggerFireworks() {
             const x = Math.random() * canvas.width;
-            const y = Math.random() * (canvas.height * 0.7);
-            const color = `hsl(${Math.random() * 360}, 100%, 70%)`;
+            const y = Math.random() * (canvas.height * 0.7); // Di bagian atas layar
+            const color = `hsl(${Math.random() * 360}, 100%, 70%)`; // Warna lebih cerah
 
-            for (let i = 0; i < 80; i++) {
+            for (let i = 0; i < 80; i++) { // Lebih sedikit partikel untuk performa
                 const angle = Math.random() * Math.PI * 2;
                 const speed = 2 + Math.random() * 3;
                 fireworksParticles.push(new Particle(
@@ -326,8 +286,9 @@
             }
             requestAnimationFrame(animateFireworks);
         }
-        animateFireworks();
+        animateFireworks(); // Mulai animasi fireworks
 
+        // Trigger fireworks setiap 2.5 - 4.5 detik
         setInterval(triggerFireworks, 2500 + Math.random() * 2000);
 
         // --- Animasi Latar Belakang (Balon, Kelopak, Hati) ---
@@ -343,19 +304,21 @@
                 }
                 document.body.append(el);
 
+                // Hapus elemen setelah animasinya selesai
                 el.addEventListener('animationend', () => {
                     el.remove();
                 });
             }
         }
 
+        // Generate elemen secara berkala
         setInterval(() => {
-            generateFloatingElements('balloon', 3, 8, 12);
-            generateFloatingElements('petal', 4, 10, 15);
-            generateFloatingElements('love', 2, 6, 9);
+            generateFloatingElements('balloon', 3, 8, 12); // 3 balon setiap 2 detik
+            generateFloatingElements('petal', 4, 10, 15); // 4 kelopak setiap 2 detik
+            generateFloatingElements('love', 2, 6, 9); // 2 hati setiap 2 detik
         }, 2000);
 
-        // --- Perubahan Pesan Ucapan ---
+        // --- Perubahan Pesan ---
         const messages = [
             "Semoga hari-harimu dipenuhi bahagia dan tawa! 🎂",
             "Panjang umur, sehat selalu, rezeki berlimpah! 💖",
@@ -367,15 +330,15 @@
         let msgIdx = 0;
         setInterval(() => {
             const messageEl = document.getElementById('message');
-            messageEl.style.opacity = 0;
+            messageEl.style.opacity = 0; // Fade out
             setTimeout(() => {
                 messageEl.textContent = messages[msgIdx];
-                messageEl.style.opacity = 1;
+                messageEl.style.opacity = 1; // Fade in
                 msgIdx = (msgIdx + 1) % messages.length;
-            }, 500);
+            }, 500); // Tunggu setengah detik untuk fade out sebelum ganti teks
         }, 3000);
 
-        // --- Lelucon Berurutan (Teka-teki) ---
+        // --- Lelucon Berurutan (Tekateki) ---
         const jokes = [
             { q: "Kenapa aku suka hujan?", a: "Karena hujan mengingatkanku akan pelukanmu yang hangat." },
             { q: "Kenapa kamu kayak teh manis?", a: "Soalnya bikin candu tiap hari pengen terus." },
@@ -394,27 +357,19 @@
             { q: "Kenapa aku nggak suka hujan deras?", a: "Karena kamu belum bisa kuajak berteduh bareng." }
         ];
         let jokeIndex = 0;
-        let typingTimeout;
-        let answerTimeout;
-        const puzzleCard = document.querySelector('.puzzle-card');
-        const btnStartPuzzle = document.getElementById('btn-start-puzzle');
-        const btnShowAnswer = document.getElementById('btn-show-answer');
-        const btnNextPuzzle = document.getElementById('btn-next-puzzle');
-        const puzzleSection = document.querySelector('.puzzle-section');
-
-        function clearPuzzleTimeouts() {
-            clearTimeout(typingTimeout);
-            clearTimeout(answerTimeout);
-        }
+        let currentTypeTimeouts = []; // Menggunakan array terpisah untuk typeTimeouts
 
         function typeText(el, txt, delay = 50, callback = null) {
             let i = 0;
             el.textContent = '';
-            clearPuzzleTimeouts(); // Hapus timeout sebelumnya saat mulai mengetik
+            // Clear previous timeouts for this typing effect
+            currentTypeTimeouts.forEach(t => clearTimeout(t));
+            currentTypeTimeouts = [];
+
             function typeChar() {
                 if (i < txt.length) {
                     el.textContent += txt.charAt(i++);
-                    typingTimeout = setTimeout(typeChar, delay);
+                    currentTypeTimeouts.push(setTimeout(typeChar, delay));
                 } else if (callback) {
                     callback();
                 }
@@ -422,108 +377,82 @@
             typeChar();
         }
 
-        function showPuzzle(idx) {
-            clearPuzzleTimeouts();
-            puzzleCard.style.display = 'block';
-            puzzleCard.style.opacity = 0;
-            puzzleCard.style.transform = 'scale(0.8)';
-            btnShowAnswer.style.display = 'inline-block'; // Tampilkan tombol jawab
-            btnNextPuzzle.style.display = 'none'; // Sembunyikan tombol lanjut/nyerah
-
-            setTimeout(() => {
-                puzzleCard.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
-                puzzleCard.style.opacity = 1;
-                puzzleCard.style.transform = 'scale(1)';
-            }, 10);
-
-            const joke = jokes[idx];
-            typeText(puzzleCard, joke.q, 50, () => {
-                // Setelah pertanyaan selesai diketik, tombol "Jawab" aktif
-            });
-        }
-
-        function showAnswerAndAdvance() {
-            clearPuzzleTimeouts();
-            const joke = jokes[jokeIndex - 1 < 0 ? jokes.length - 1 : jokeIndex -1]; // Dapatkan joke saat ini
-            typeText(puzzleCard, joke.q + "\n\n👉 " + joke.a, 40, () => {
-                btnShowAnswer.style.display = 'none'; // Sembunyikan tombol jawab
-                btnNextPuzzle.style.display = 'inline-block'; // Tampilkan tombol lanjut/nyerah
-
-                answerTimeout = setTimeout(() => {
-                    hidePuzzle();
-                    // Jika semua teka-teki sudah dimainkan, reset index dan tampilkan pesan selesai
-                    if (jokeIndex === jokes.length) {
-                        puzzleCard.textContent = "🥳 Kamu sudah menyelesaikan semua teka-teki! Selamat ulang tahun lagi!";
-                        puzzleCard.style.display = 'block'; // Pastikan kartu tetap terlihat dengan pesan akhir
-                        btnShowAnswer.style.display = 'none';
-                        btnNextPuzzle.style.display = 'none';
-                        btnStartPuzzle.textContent = "Ulang Teka-teki?";
-                        jokeIndex = 0; // Reset index untuk permainan berikutnya
-                    } else {
-                        // Tidak otomatis ke teka-teki berikutnya, user klik "Lanjut"
-                    }
-                }, 5000); // Durasi tampil jawaban (5 detik)
-            });
-        }
-
-        function hidePuzzle() {
-            clearPuzzleTimeouts();
-            puzzleCard.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
-            puzzleCard.style.opacity = 0;
-            puzzleCard.style.transform = 'scale(0.8)';
-            setTimeout(() => {
-                puzzleCard.style.display = 'none';
-                puzzleCard.textContent = ''; // Kosongkan konten
-                btnShowAnswer.style.display = 'none';
-                btnNextPuzzle.style.display = 'none';
-            }, 500); // Tunggu transisi fade out selesai
-        }
-
-        btnStartPuzzle.addEventListener('click', () => {
-            puzzleSection.style.display = 'block'; // Tampilkan bagian puzzle
-            btnStartPuzzle.textContent = "Ulang Teka-teki?"; // Ubah teks tombol menjadi ulang
-            jokeIndex = 0; // Mulai dari awal
-            showPuzzle(jokeIndex);
+        function showNextJoke() {
+            const note = document.getElementById('joke-note');
+            const joke = jokes[jokeIndex];
             jokeIndex = (jokeIndex + 1) % jokes.length;
-        });
 
-        btnShowAnswer.addEventListener('click', showAnswerAndAdvance);
+            // Posisi acak yang lebih responsif
+            const noteWidth = 300; // Estimasi lebar max note
+            const noteHeight = 150; // Estimasi tinggi max note
+            note.style.left = `${Math.random() * (window.innerWidth - noteWidth - 40) + 20}px`;
+            note.style.top = `${Math.random() * (window.innerHeight - noteHeight - 40) + 20}px`;
+            note.style.display = 'block';
+            note.style.opacity = 0;
+            note.style.transform = 'scale(0.8)';
+            setTimeout(() => {
+                note.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                note.style.opacity = 1;
+                note.style.transform = 'scale(1)';
+            }, 10); // Kecilkan delay untuk transisi
 
-        btnNextPuzzle.addEventListener('click', () => {
-            clearPuzzleTimeouts(); // Pastikan timeout sebelumnya dihentikan
-            if (jokeIndex === 0 && puzzleCard.textContent.includes("Kamu sudah menyelesaikan semua teka-teki")) {
-                // Jika sudah selesai dan tombol diklik lagi, mulai ulang
-                puzzleCard.textContent = '';
-                showPuzzle(jokeIndex);
-                jokeIndex = (jokeIndex + 1) % jokes.length;
-            } else {
-                showPuzzle(jokeIndex);
-                jokeIndex = (jokeIndex + 1) % jokes.length;
-            }
-        });
+            typeText(note, joke.q, 50, () => {
+                setTimeout(() => {
+                    typeText(note, joke.q + "\n\n👉 " + joke.a, 40, () => {
+                        setTimeout(() => {
+                            note.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                            note.style.opacity = 0;
+                            note.style.transform = 'scale(0.8)';
+                            setTimeout(() => {
+                                note.style.display = 'none';
+                                setTimeout(showNextJoke, 2000); // Tunggu 2 detik sebelum joke berikutnya
+                            }, 500); // Tunggu transisi fade out selesai
+                        }, 5000); // Durasi tampil joke (5 detik setelah jawaban muncul)
+                    });
+                }, 3000); // Jeda sebelum jawaban muncul
+            });
+        }
+        setTimeout(showNextJoke, 2000); // Mulai joke pertama setelah 2 detik
 
-
-        // --- Kontrol Musik ---
+        // --- Autoplay & Kontrol Musik ---
         const audio = document.getElementById('bg-music');
-        const btnMusicToggle = document.getElementById('btn-music-toggle');
-        let audioPlayedOnce = false; // Flag untuk melacak apakah audio pernah diputar
+        const btnPlay = document.getElementById('btn-play');
+        let audioPlayed = false; // Flag untuk melacak status pemutaran audio
 
-        function toggleMusic() {
-            if (audio.paused) {
-                audio.play().then(() => {
-                    btnMusicToggle.textContent = '⏸️ Pause Musik';
-                    audioPlayedOnce = true;
-                }).catch(error => {
-                    console.warn('Gagal memutar musik:', error);
-                    alert('Musik tidak dapat diputar otomatis. Silakan izinkan pemutaran media di browser Anda.');
-                    btnMusicToggle.textContent = '▶️ Play Musik';
-                });
-            } else {
-                audio.pause();
-                btnMusicToggle.textContent = '▶️ Play Musik';
-            }
+        function attemptPlayAudio() {
+            if (audioPlayed) return; // Jika sudah diputar, jangan coba lagi
+
+            audio.play().then(() => {
+                console.log('Musik berhasil diputar.');
+                btnPlay.style.display = 'none'; // Sembunyikan tombol jika berhasil
+                audioPlayed = true;
+            }).catch(error => {
+                console.warn('Autoplay musik diblokir atau gagal:', error);
+                btnPlay.style.display = 'block'; // Tampilkan tombol jika gagal
+                btnPlay.textContent = '▶️ Play Musik';
+            });
         }
 
-        btnMusicToggle.addEventListener('click', toggleMusic);
+        // Coba putar audio setelah meta data dimuat (lebih cepat dari canplaythrough)
+        audio.addEventListener('loadedmetadata', attemptPlayAudio, { once: true });
 
-        // Coba putar musik secara otomatis dengan interaksi pen
+        // Event listener untuk tombol play
+        btnPlay.addEventListener('click', () => {
+            if (audio.paused) {
+                attemptPlayAudio();
+            }
+        });
+
+        // Event listener interaksi awal pengguna (untuk iOS/Safari)
+        document.addEventListener('touchstart', attemptPlayAudio, { once: true });
+        document.addEventListener('mousedown', attemptPlayAudio, { once: true });
+
+        // Fallback jika semua gagal, tampilkan tombol play
+        setTimeout(() => {
+            if (!audioPlayed) {
+                btnPlay.style.display = 'block';
+            }
+        }, 3000); // Beri waktu 3 detik untuk autoplay mencoba
+    </script>
+</body>
+</html>
